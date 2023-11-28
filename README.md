@@ -18,13 +18,13 @@ Try it :
 ```bash 
    python3 -m venv venv
 ```
-- Get the requirements in utils folder :
-```bash 
-   pipreqs . > requirements.txt
-```
 - Activate your venv :
 ```bash 
-   venv venv/bin/activate
+   source venv/bin/activate
+```
+- Install requirements :
+```bash 
+   pip install -r ./utils/requirements.txt
 ```
 - Add your API key to your .env 
 - Finally run the main.py 
