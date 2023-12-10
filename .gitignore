@@ -1,3 +1,7 @@
+# data fikder
+data/bronze/*
+data/silver/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
