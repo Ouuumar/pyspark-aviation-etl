@@ -36,20 +36,24 @@ def get_spark_object(env:str="dev", appName:str="flight-tracker-app") -> SparkSe
         logging.error("An error occured ", e)
 
 
-def read_data(spark:SparkSession, schema:StructType) -> DataFrame:
+def read_data(spark:SparkSession, schema:StructType, date:str=None) -> DataFrame:
     """
     Reads JSON data into a PySpark DataFrame.
 
     Parameters:
     - spark (pyspark.sql.SparkSession): The PySpark SparkSession.
     - schema (pyspark.sql.types.StructType): The schema to be used for reading the JSON data.
+    - date (str): The date of a particular json file to read (optionnal)
 
     Returns:
     pyspark.sql.DataFrame: The PySpark DataFrame containing the read JSON data.
     """
     try:
         logging.info("Reading data into spark...")
-        df = spark.read.option("multiline", "true").json(f"./data/bronze/{datetime.today().strftime('%Y-%m-%d')}_data.json", schema=schema)
+        if date:
+            df = spark.read.option("multiline", "true").json(f"./data/bronze/{date}_data.json", schema=schema)
+        else:
+            df = spark.read.option("multiline", "true").json(f"./data/bronze/{datetime.today().strftime('%Y-%m-%d')}_data.json", schema=schema)
     except Exception as e:
         logging.error("Problem reading data into spark...", e)
     else:
