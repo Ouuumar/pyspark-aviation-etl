@@ -171,3 +171,19 @@ def show_nulls(df:DataFrame) -> DataFrame:
     - df (pyspark.sql.DataFrame): The PySpark DataFrame to analyze.
     """
     return df.select([count(when(col(c).isNull(), c)).alias(c) for c in df.columns]).show()
+
+
+def is_containing_nulls(df: DataFrame) -> bool:
+    """
+    Checks whether a PySpark DataFrame contains null values.
+
+    Parameters:
+    - df (DataFrame): The PySpark DataFrame to be checked.
+
+    Returns:
+    bool: True if the DataFrame contains null values, False otherwise.
+    """
+    is_null = any(df.select([col(c).isNull() for c in df.columns]).first())
+    logging.info(f"Dataframe contains null ? : {is_null}")
+    
+    return is_null
