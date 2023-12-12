@@ -49,12 +49,10 @@ def read_data(spark:SparkSession, schema:StructType, date:str=None) -> DataFrame
     pyspark.sql.DataFrame: The PySpark DataFrame containing the read JSON data.
     """
     try:
-        logging.info("Reading data into spark...")
-        if date:
-            df = spark.read.option("multiline", "true").json(f"./data/bronze/{date}_data.json", schema=schema)
-        else:
-            df = spark.read.option("multiline", "true").json(f"./data/bronze/{datetime.today().strftime('%Y-%m-%d')}_data.json", schema=schema)
+        logging.info("Reading data into Spark...")
+        file_path = f"./data/bronze/{date}_data.json" if date else f"./data/bronze/{datetime.today().strftime('%Y-%m-%d')}_data.json"
+        df = spark.read.option("multiline", "true").json(file_path, schema=schema)
     except Exception as e:
-        logging.error("Problem reading data into spark...", e)
-    else:
-        return df
+        logging.error("Problem reading data into Spark...", e)
+        return None
+    return df
