@@ -67,7 +67,7 @@ def schema() -> StructType:
 
 
 
-def arrange_schema(df:DataFrame):
+def arrange_schema(df:DataFrame) -> None:
     """
     Arranges the schema of the given PySpark DataFrame.
 
@@ -173,17 +173,16 @@ def show_nulls(df:DataFrame) -> DataFrame:
     return df.select([count(when(col(c).isNull(), c)).alias(c) for c in df.columns]).show()
 
 
-def is_containing_nulls(df: DataFrame) -> bool:
+def is_containing_nulls(data:DataFrame) -> bool:
     """
-    Checks whether a PySpark DataFrame contains null values.
+    Check if a PySpark DataFrame contains null values.
 
     Parameters:
-    - df (DataFrame): The PySpark DataFrame to be checked.
+    - data (pyspark.sql.DataFrame): The input data, which can be a PySpark DataFrame.
 
     Returns:
     bool: True if the DataFrame contains null values, False otherwise.
     """
-    is_null = any(df.select([col(c).isNull() for c in df.columns]).first())
-    logging.info(f"Dataframe contains null ? : {is_null}")
-    
-    return is_null
+    if isinstance(data, DataFrame):
+        return any(data.select([col(c).isNull() for c in data.columns]).first())
+    return False
