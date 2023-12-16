@@ -11,7 +11,7 @@ from utils.processing import is_containing_nulls
 logging.basicConfig(filename="./logs/logs.log", format="%(name)s - %(levelname)s - %(asctime)s - %(message)s", level=logging.INFO)
 
 
-def extract_data(params:dict) -> list:
+def extract_data(params: dict) -> list:
     """
     Extracts data from an API using the provided query parameters.
 
@@ -24,9 +24,16 @@ def extract_data(params:dict) -> list:
     try:
         logging.info("Starting requesting data to API...")
         raw_data = requests.get("http://api.aviationstack.com/v1/flights", params=params).json()
+        
+        # Vérifie si raw_data est vide
+        if not raw_data or "data" not in raw_data:
+            raise ValueError("No data found in the API response.")
+        
         return raw_data["data"]
     except Exception as e:
         logging.error("Problem requesting data...", e)
+        raise
+
 
 
 def write_bronze(data:json) -> None:
