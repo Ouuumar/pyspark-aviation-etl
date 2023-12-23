@@ -26,7 +26,7 @@ if __name__ == "__main__":
         logging.info("File is available, processing will begin...")
         spark = get_spark_object()
         schema = schema()
-        df_raw = read_data(spark, schema)
+        df_raw = read_data(spark, schema, "bronze")
         df_root = arrange_schema(df_raw)
         df_cleansed = handle_nulls(df_root)
         show_nulls(df_cleansed)
